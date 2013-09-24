@@ -1,0 +1,20 @@
+{
+    "name": "DaveRandom/LDAPi",
+    "description": "Simple object oriented wrapper around ext/ldap",
+    "keywords": ["ldap"],
+    "homepage": "https://github.com/DaveRandom/LDAPi",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Wright",
+            "email": "ldapi@daverandom.com",
+            "homepage": "https://github.com/DaveRandom",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "LDAPi\\": "src/"
+        }
+    }
+}
