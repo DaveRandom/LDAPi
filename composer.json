@@ -1,5 +1,5 @@
 {
-    "name": "DaveRandom/LDAPi",
+    "name": "daverandom/ldapi",
     "description": "Simple object oriented wrapper around ext/ldap",
     "keywords": ["ldap"],
     "homepage": "https://github.com/DaveRandom/LDAPi",
