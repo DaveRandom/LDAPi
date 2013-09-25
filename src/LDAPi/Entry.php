@@ -2,7 +2,7 @@
 
 namespace LDAPi;
 
-class ResultEntry
+class Entry
 {
     /**
      * @var resource ext/ldap link resource
@@ -25,7 +25,7 @@ class ResultEntry
     }
 
     /**
-     * @return ResultEntry|null
+     * @return Entry|null
      * @throws EntryRetrievalFailureException
      */
     public function nextEntry()
@@ -38,7 +38,7 @@ class ResultEntry
             return null;
         }
 
-        return new ResultEntry($this->link, $entry);
+        return new Entry($this->link, $entry);
     }
 
     /**

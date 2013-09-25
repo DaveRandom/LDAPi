@@ -57,7 +57,7 @@ class ResultSet
     }
 
     /**
-     * @return ResultEntry|null
+     * @return Entry|null
      * @throws EntryRetrievalFailureException
      */
     public function firstEntry()
@@ -70,7 +70,7 @@ class ResultSet
             return null;
         }
 
-        return new ResultEntry($this->link, $entry);
+        return new Entry($this->link, $entry);
     }
 
     /**
