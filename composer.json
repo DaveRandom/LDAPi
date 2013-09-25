@@ -12,6 +12,10 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-ldap": "*"
+    },
     "autoload": {
         "psr-0": {
             "LDAPi\\": "src/"
