@@ -15,6 +15,9 @@
     "autoload": {
         "psr-0": {
             "LDAPi\\": "src/"
-        }
+        },
+        "files": [
+            "src/global_functions.php"
+        ]
     }
 }
