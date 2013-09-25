@@ -171,7 +171,7 @@ namespace LDAPi
         {
             $this->checkBound();
 
-            if (!$result = @ldap_list($this->link, $dn, $filter, $attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+            if (!$result = @ldap_list($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
                 throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
             }
 
@@ -254,7 +254,7 @@ namespace LDAPi
         {
             $this->checkBound();
 
-            if (!$result = @ldap_read($this->link, $dn, $filter, $attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+            if (!$result = @ldap_read($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
                 throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
             }
 
@@ -316,7 +316,7 @@ namespace LDAPi
         {
             $this->checkBound();
 
-            if (!$result = @ldap_search($this->link, $dn, $filter, $attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+            if (!$result = @ldap_search($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
                 throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
             }
 
