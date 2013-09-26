@@ -74,7 +74,7 @@ class ResultSet
     }
 
     /**
-     * @return ResultReference|null
+     * @return Reference|null
      * @throws ReferenceRetrievalFailureException
      */
     public function firstReference()
@@ -87,7 +87,7 @@ class ResultSet
             return null;
         }
 
-        return new ResultReference($this->link, $reference);
+        return new Reference($this->link, $reference);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace LDAPi;
 
-class ResultReference
+class Reference
 {
     /**
      * @var resource ext/ldap link resource
@@ -26,7 +26,7 @@ class ResultReference
     }
 
     /**
-     * @return ResultReference|null
+     * @return Reference|null
      * @throws ReferenceRetrievalFailureException
      */
     public function nextReference()
@@ -39,11 +39,11 @@ class ResultReference
             return null;
         }
 
-        return new ResultReference($this->link, $reference);
+        return new Reference($this->link, $reference);
     }
 
     /**
-     * @return array
+     * @return string[]
      * @throws ValueRetrievalFailureException
      */
     public function parse()
