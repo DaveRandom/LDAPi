@@ -50,7 +50,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_add($this->link, $dn, $entry)) {
+        if (!ldap_add($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -65,7 +65,7 @@ class Directory
     {
         $this->checkConnected();
 
-        if (!@ldap_bind($this->link, $dn, $password)) {
+        if (!ldap_bind($this->link, $dn, $password)) {
             throw new BindFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -84,7 +84,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (-1 === $result = @ldap_compare($this->link, $dn, $entry)) {
+        if (-1 === $result = ldap_compare($this->link, $dn, $entry)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -103,7 +103,7 @@ class Directory
             throw new AlreadyAvailableException('An active connection to the directory is already available');
         }
 
-        if (!$this->link = @ldap_connect($host, $port)) {
+        if (!$this->link = ldap_connect($host, $port)) {
             throw new ConnectFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -119,7 +119,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_control_paged_result($this->link, $pageSize, $isCritical, $cookie)) {
+        if (!ldap_control_paged_result($this->link, $pageSize, $isCritical, $cookie)) {
             throw new PaginationFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -133,7 +133,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_delete($this->link, $dn)) {
+        if (!ldap_delete($this->link, $dn)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -148,7 +148,7 @@ class Directory
     {
         $this->checkConnected();
 
-        if (!@ldap_get_option($this->link, $opt, $value)) {
+        if (!ldap_get_option($this->link, $opt, $value)) {
             throw new OptionFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -171,7 +171,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!$result = @ldap_list($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+        if (!$result = ldap_list($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -188,7 +188,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_mod_add($this->link, $dn, $entry)) {
+        if (!ldap_mod_add($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -203,7 +203,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_mod_del($this->link, $dn, $entry)) {
+        if (!ldap_mod_del($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -218,7 +218,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_mod_replace($this->link, $dn, $entry)) {
+        if (!ldap_mod_replace($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -233,7 +233,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_modify($this->link, $dn, $entry)) {
+        if (!ldap_modify($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -254,7 +254,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!$result = @ldap_read($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+        if (!$result = ldap_read($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -273,7 +273,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!@ldap_rename($this->link, $dn, $newRDN, $newParent, $deleteOldRDN)) {
+        if (!ldap_rename($this->link, $dn, $newRDN, $newParent, $deleteOldRDN)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -293,7 +293,7 @@ class Directory
     {
         $this->checkConnected();
 
-        if (!@ldap_sasl_bind($this->link, $dn, $password, $saslMech, $saslRealm, $saslAuthcId, $saslAuthzId, $props)) {
+        if (!ldap_sasl_bind($this->link, $dn, $password, $saslMech, $saslRealm, $saslAuthcId, $saslAuthzId, $props)) {
             throw new BindFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -316,7 +316,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (!$result = @ldap_search($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
+        if (!$result = ldap_search($this->link, $dn, $filter, (array)$attributes, (int)(bool)$attrsOnly, $sizeLimit, $timeLimit, $deRef)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -333,7 +333,7 @@ class Directory
     {
         $this->checkConnected();
 
-        if (!@ldap_set_option($this->link, $opt, $value)) {
+        if (!ldap_set_option($this->link, $opt, $value)) {
             throw new OptionFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -347,7 +347,7 @@ class Directory
     {
         $this->checkConnected();
 
-        if (!@ldap_set_rebind_proc($this->link, $callback)) {
+        if (!ldap_set_rebind_proc($this->link, $callback)) {
             throw new OptionFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -364,7 +364,7 @@ class Directory
             throw new AlreadyAvailableException('An active bound connection to the directory is already available');
         }
 
-        if (!@ldap_start_tls($this->link)) {
+        if (!ldap_start_tls($this->link)) {
             throw new EncryptionFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -376,7 +376,7 @@ class Directory
     {
         $this->checkBound();
 
-        @ldap_unbind($this->link);
+        ldap_unbind($this->link);
 
         $this->link = null;
         $this->bound = false;

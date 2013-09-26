@@ -30,7 +30,7 @@ class Entry
      */
     public function nextEntry()
     {
-        if (!$entry = @ldap_next_entry($this->link, $this->entry)) {
+        if (!$entry = ldap_next_entry($this->link, $this->entry)) {
             if (0 !== $errNo = ldap_errno($this->link)) {
                 throw new EntryRetrievalFailureException(ldap_error($this->link), $errNo);
             }
@@ -47,7 +47,7 @@ class Entry
      */
     public function getValues($attribute)
     {
-        if (!$values = @ldap_get_values($this->link, $this->entry, $attribute)) {
+        if (!$values = ldap_get_values($this->link, $this->entry, $attribute)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -60,7 +60,7 @@ class Entry
      */
     public function getAttributes()
     {
-        if (!$attributes = @ldap_get_attributes($this->link, $this->entry)) {
+        if (!$attributes = ldap_get_attributes($this->link, $this->entry)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -73,7 +73,7 @@ class Entry
      */
     public function getDN()
     {
-        if (!$dn = @ldap_get_dn($this->link, $this->entry)) {
+        if (!$dn = ldap_get_dn($this->link, $this->entry)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 

@@ -31,7 +31,7 @@ class Reference
      */
     public function nextReference()
     {
-        if (!$reference = @ldap_next_reference($this->link, $this->reference)) {
+        if (!$reference = ldap_next_reference($this->link, $this->reference)) {
             if (0 !== $errNo = ldap_errno($this->link)) {
                 throw new ReferenceRetrievalFailureException(ldap_error($this->link), $errNo);
             }
@@ -48,7 +48,7 @@ class Reference
      */
     public function parse()
     {
-        if (!@ldap_parse_reference($this->link, $this->reference, $referrals)) {
+        if (!ldap_parse_reference($this->link, $this->reference, $referrals)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
