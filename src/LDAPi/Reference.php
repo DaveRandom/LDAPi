@@ -2,7 +2,7 @@
 
 namespace LDAPi;
 
-class ResultReference
+class Reference
 {
     /**
      * @var resource ext/ldap link resource
@@ -26,12 +26,12 @@ class ResultReference
     }
 
     /**
-     * @return ResultReference|null
+     * @return Reference|null
      * @throws ReferenceRetrievalFailureException
      */
     public function nextReference()
     {
-        if (!$reference = @ldap_next_reference($this->link, $this->reference)) {
+        if (!$reference = ldap_next_reference($this->link, $this->reference)) {
             if (0 !== $errNo = ldap_errno($this->link)) {
                 throw new ReferenceRetrievalFailureException(ldap_error($this->link), $errNo);
             }
@@ -39,16 +39,16 @@ class ResultReference
             return null;
         }
 
-        return new ResultReference($this->link, $reference);
+        return new Reference($this->link, $reference);
     }
 
     /**
-     * @return array
+     * @return string[]
      * @throws ValueRetrievalFailureException
      */
     public function parse()
     {
-        if (!@ldap_parse_reference($this->link, $this->reference, $referrals)) {
+        if (!ldap_parse_reference($this->link, $this->reference, $referrals)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 

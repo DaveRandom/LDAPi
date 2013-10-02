@@ -26,7 +26,7 @@ class ResultSet
 
     public function __destruct()
     {
-        @ldap_free_result($this->result);
+        ldap_free_result($this->result);
     }
 
     /**
@@ -36,7 +36,7 @@ class ResultSet
      */
     public function controlPagedResult(&$estimated = null)
     {
-        if (!@ldap_control_paged_result_response($this->link, $this->result, $cookie, $estimated)) {
+        if (!ldap_control_paged_result_response($this->link, $this->result, $cookie, $estimated)) {
             throw new PaginationFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -49,7 +49,7 @@ class ResultSet
      */
     public function entryCount()
     {
-        if (!$result = @ldap_count_entries($this->link, $this->result)) {
+        if (!$result = ldap_count_entries($this->link, $this->result)) {
             throw new EntryCountRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -57,12 +57,12 @@ class ResultSet
     }
 
     /**
-     * @return ResultEntry|null
+     * @return Entry|null
      * @throws EntryRetrievalFailureException
      */
     public function firstEntry()
     {
-        if (!$entry = @ldap_first_entry($this->link, $this->result)) {
+        if (!$entry = ldap_first_entry($this->link, $this->result)) {
             if (0 !== $errNo = ldap_errno($this->link)) {
                 throw new EntryRetrievalFailureException(ldap_error($this->link), $errNo);
             }
@@ -70,16 +70,16 @@ class ResultSet
             return null;
         }
 
-        return new ResultEntry($this->link, $entry);
+        return new Entry($this->link, $entry);
     }
 
     /**
-     * @return ResultReference|null
+     * @return Reference|null
      * @throws ReferenceRetrievalFailureException
      */
     public function firstReference()
     {
-        if (!$reference = @ldap_first_reference($this->link, $this->result)) {
+        if (!$reference = ldap_first_reference($this->link, $this->result)) {
             if (0 !== $errNo = ldap_errno($this->link)) {
                 throw new ReferenceRetrievalFailureException(ldap_error($this->link), $errNo);
             }
@@ -87,7 +87,7 @@ class ResultSet
             return null;
         }
 
-        return new ResultReference($this->link, $reference);
+        return new Reference($this->link, $reference);
     }
 
     /**
@@ -96,7 +96,7 @@ class ResultSet
      */
     public function parse()
     {
-        if (!@ldap_parse_result($this->link, $this->result, $errCode, $matchedDN, $errMsg, $referrals)) {
+        if (!ldap_parse_result($this->link, $this->result, $errCode, $matchedDN, $errMsg, $referrals)) {
             throw new InformationRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
@@ -114,7 +114,7 @@ class ResultSet
      */
     public function getEntries()
     {
-        if (!$entries = @ldap_get_entries($this->link, $this->result)) {
+        if (!$entries = ldap_get_entries($this->link, $this->result)) {
             throw new ValueRetrievalFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
