@@ -9,7 +9,7 @@
             "name": "Chris Wright",
             "email": "ldapi@daverandom.com",
             "homepage": "https://github.com/DaveRandom",
-            "role": "Developer"
+            "role": "Lead Developer"
         }
     ],
     "require": {
@@ -17,11 +17,7 @@
         "ext-ldap": "*"
     },
     "autoload": {
-        "psr-0": {
-            "LDAPi\\": "src/"
-        },
-        "files": [
-            "src/functions.php"
-        ]
+        "psr-4": {"LDAPi\\": "src/"},
+        "files": ["src/functions.php"]
     }
 }
