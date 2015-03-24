@@ -33,6 +33,31 @@ class Directory
         return new ResultSet($this->link, $result);
     }
 
+    /**
+     * @param string $host
+     * @param int $port
+     * @param string $user
+     * @param string $pass
+     * @throws ConnectFailureException
+     * @throws BindFailureException
+     */
+    public function __construct($host = null, $port = null, $user = null, $pass = null)
+    {
+        if (!isset($host)) {
+            return;
+        }
+
+        if (isset($port)) {
+            $this->connect($host, $port);
+        } else {
+            $this->connect($host);
+        }
+
+        if (isset($user)) {
+            $this->bind($user, $pass);
+        }
+    }
+
     public function __destruct()
     {
         if ($this->bound) {
@@ -84,7 +109,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (-1 === $result = ldap_compare($this->link, $dn, $entry)) {
+        if (-1 === $result = ldap_compare($this->link, $dn, $attribute, $value)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 
