@@ -20,7 +20,6 @@ class Reference
      */
     public function __construct($link, $reference)
     {
-        $this->resultSet = $resultSet;
         $this->link = $link;
         $this->reference = $reference;
     }

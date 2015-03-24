@@ -84,7 +84,7 @@ class Directory
     {
         $this->checkBound();
 
-        if (-1 === $result = ldap_compare($this->link, $dn, $entry)) {
+        if (-1 === $result = ldap_compare($this->link, $dn, $attribute, $value)) {
             throw new ReadFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
 

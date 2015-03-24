@@ -2,4 +2,4 @@
 
 namespace LDAPi;
 
-class EntryRetrievalFailureException extends InformationRetrievalFailureException {}
+class EntryCountRetrievalFailureException extends InformationRetrievalFailureException {}

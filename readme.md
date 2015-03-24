@@ -32,5 +32,5 @@ Example usage
             print_r($entry->getAttributes());
         } while($entry = $entry->nextEntry());
     } catch(LDAPi\DirectoryOperationFailureException $e) {
-        exit('An error occured: ' . $e->getMessage());
+        exit('An error occurred: ' . $e->getMessage());
     }

@@ -16,7 +16,7 @@ class Entry
 
     /**
      * @param resource $link
-     * @param resource $result
+     * @param resource $entry
      */
     public function __construct($link, $entry)
     {
@@ -42,6 +42,7 @@ class Entry
     }
 
     /**
+     * @param string $attribute
      * @return array
      * @throws ValueRetrievalFailureException
      */
