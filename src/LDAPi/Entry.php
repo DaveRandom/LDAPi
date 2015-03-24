@@ -50,7 +50,7 @@ class Entry
      * @return array
      * @throws ValueRetrievalFailureException
      */
-    public function getValues($attribute, $mode = self::MODE_BINARY)
+    public function getValues($attribute, $mode = self::MODE_TEXT)
     {
         $mode = (int)$mode;
 
