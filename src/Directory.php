@@ -66,6 +66,23 @@ class Directory
     }
 
     /**
+     * @param string $name
+     */
+    public function __get($name)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
+    }
+
+    /**
      * @param string $dn
      * @param array  $entry
      * @throws UnavailableException
@@ -259,6 +276,26 @@ class Directory
         $this->checkBound();
 
         if (!ldap_modify($this->link, $dn, $entry)) {
+            throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
+        }
+    }
+
+    /**
+     * @param string $dn
+     * @param array  $entry
+     * @throws FeatureUnavailableException
+     * @throws UnavailableException
+     * @throws WriteFailureException
+     */
+    public function modifyBatch($dn, array $entry)
+    {
+        if (!function_exists('ldap_modify_batch')) {
+            throw new FeatureUnavailableException('The ldap_modify_batch() function is not available on this system');
+        }
+
+        $this->checkBound();
+
+        if (!ldap_modify_batch($this->link, $dn, $entry)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
