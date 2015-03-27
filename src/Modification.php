@@ -9,8 +9,7 @@ use ArrayObject;
  * @package LDAPi
  * @property string $attributeName
  * @property int $operation
- * @property \ArrayObject|array $data
- * @property mixed $value
+ * @property \ArrayObject|array $values
  */
 class Modification
 {
@@ -86,5 +85,32 @@ class Modification
         }
 
         return $this->data[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        if (in_array($name, ['attributeName', 'operation'])) {
+            return isset($this->data[$name]);
+        } else if ($name === 'values') {
+            return count($this->data['values']) > 0;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function __unset($name)
+    {
+        if (in_array($name, ['attributeName', 'operation'])) {
+            $this->data[$name] = null;
+        } else if ($name === 'values') {
+            $this->data[$name] = new ArrayObject;
+        }
     }
 }
