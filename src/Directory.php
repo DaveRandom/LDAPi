@@ -198,6 +198,14 @@ class Directory
     }
 
     /**
+     * @return bool
+     */
+    public function isBound()
+    {
+        return $this->bound;
+    }
+
+    /**
      * @param string $dn
      * @param string $filter
      * @param array  $attributes
@@ -282,12 +290,12 @@ class Directory
 
     /**
      * @param string $dn
-     * @param array  $entry
+     * @param Modification[] $modifications
      * @throws FeatureUnavailableException
      * @throws UnavailableException
      * @throws WriteFailureException
      */
-    public function modifyBatch($dn, array $entry)
+    public function modifyBatch($dn, array $modifications)
     {
         if (!function_exists('ldap_modify_batch')) {
             throw new FeatureUnavailableException('The ldap_modify_batch() function is not available on this system');
@@ -295,7 +303,33 @@ class Directory
 
         $this->checkBound();
 
-        if (!ldap_modify_batch($this->link, $dn, $entry)) {
+        $ops = [];
+        foreach ($modifications as $key => $modification) {
+            if (!$modification instanceof Modification) {
+                throw new InvalidValueSetException('$modifications must be an array of Modification instances');
+            } else if (!isset($modification->attributeName)) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define an attribute');
+            } else if (!isset($modification->operation)) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define an operation');
+            }
+
+            $op = [
+                'attrib'  => $modification->attributeName,
+                'modtype' => $modification->operation,
+            ];
+
+            if (!isset($modification->values) && $modification->operation !== Modification::OP_REMOVE_ALL) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define a value set');
+            }
+
+            if (isset($modification->values)) {
+                $op['values'] = $modification->values;
+            }
+
+            $ops[] = $op;
+        }
+
+        if (!ldap_modify_batch($this->link, $dn, $ops)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
