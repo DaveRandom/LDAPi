@@ -18,6 +18,6 @@
     },
     "autoload": {
         "psr-4": {"LDAPi\\": "src/"},
-        "files": ["src/functions.php"]
+        "files": ["src/functions.php", "version"]
     }
 }
