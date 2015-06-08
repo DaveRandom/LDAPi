@@ -35,13 +35,14 @@ class Directory
 
     /**
      * @param string $host
-     * @param int $port
+     * @param int    $port
      * @param string $user
      * @param string $pass
+     * @param array  $options
      * @throws ConnectFailureException
      * @throws BindFailureException
      */
-    public function __construct($host = null, $port = null, $user = null, $pass = null)
+    public function __construct($host = null, $port = null, $user = null, $pass = null, array $options = [])
     {
         if (!isset($host)) {
             return;
@@ -51,6 +52,10 @@ class Directory
             $this->connect($host, $port);
         } else {
             $this->connect($host);
+        }
+
+        foreach ($options as $option => $value) {
+            $this->setOption($option, $value);
         }
 
         if (isset($user)) {
@@ -63,6 +68,23 @@ class Directory
         if ($this->bound) {
             $this->unbind();
         }
+    }
+
+    /**
+     * @param string $name
+     */
+    public function __get($name)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
     }
 
     /**
@@ -181,6 +203,14 @@ class Directory
     }
 
     /**
+     * @return bool
+     */
+    public function isBound()
+    {
+        return $this->bound;
+    }
+
+    /**
      * @param string $dn
      * @param string $filter
      * @param array  $attributes
@@ -259,6 +289,52 @@ class Directory
         $this->checkBound();
 
         if (!ldap_modify($this->link, $dn, $entry)) {
+            throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
+        }
+    }
+
+    /**
+     * @param string $dn
+     * @param Modification[] $modifications
+     * @throws FeatureUnavailableException
+     * @throws UnavailableException
+     * @throws WriteFailureException
+     */
+    public function modifyBatch($dn, array $modifications)
+    {
+        if (!function_exists('ldap_modify_batch')) {
+            throw new FeatureUnavailableException('The ldap_modify_batch() function is not available on this system');
+        }
+
+        $this->checkBound();
+
+        $ops = [];
+        foreach ($modifications as $key => $modification) {
+            if (!$modification instanceof Modification) {
+                throw new InvalidValueSetException('$modifications must be an array of Modification instances');
+            } else if (!isset($modification->attributeName)) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define an attribute');
+            } else if (!isset($modification->operation)) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define an operation');
+            }
+
+            $op = [
+                'attrib'  => $modification->attributeName,
+                'modtype' => $modification->operation,
+            ];
+
+            if (!isset($modification->values) && $modification->operation !== Modification::OP_REMOVE_ALL) {
+                throw new IncompleteModificationException('Modification ' . $key . ' does not define a value set');
+            }
+
+            if (isset($modification->values)) {
+                $op['values'] = $modification->values;
+            }
+
+            $ops[] = $op;
+        }
+
+        if (!ldap_modify_batch($this->link, $dn, $ops)) {
             throw new WriteFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }
@@ -349,16 +425,16 @@ class Directory
     }
 
     /**
-     * @param int   $opt
+     * @param int   $option
      * @param mixed $value
      * @throws UnavailableException
      * @throws OptionFailureException
      */
-    public function setOption($opt, $value)
+    public function setOption($option, $value)
     {
         $this->checkConnected();
 
-        if (!ldap_set_option($this->link, $opt, $value)) {
+        if (!ldap_set_option($this->link, $option, $value)) {
             throw new OptionFailureException(ldap_error($this->link), ldap_errno($this->link));
         }
     }

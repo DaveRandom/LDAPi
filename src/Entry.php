@@ -28,6 +28,23 @@ class Entry
     }
 
     /**
+     * @param string $name
+     */
+    public function __get($name)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        throw new NonExistentPropertyException('Property ' . $name . ' not defined for ' . get_class($this));
+    }
+
+    /**
      * @return Entry|null
      * @throws EntryRetrievalFailureException
      */

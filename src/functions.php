@@ -48,4 +48,11 @@ namespace {
             return strtr($subject, $charList);
         }
     }
+
+    if (!function_exists('ldap_modify_batch')) {
+        define('LDAP_MODIFY_BATCH_ADD',        1);
+        define('LDAP_MODIFY_BATCH_REMOVE',     2);
+        define('LDAP_MODIFY_BATCH_REMOVE_ALL', 18);
+        define('LDAP_MODIFY_BATCH_REPLACE',    3);
+    }
 }
