@@ -23,7 +23,7 @@ class Directory
 
     private function checkBound()
     {
-        if (!$this->bound) {
+        if (!$this->isBound()) {
             throw new UnavailableException('An active bound connection to the directory is not available');
         }
     }
@@ -65,7 +65,7 @@ class Directory
 
     public function __destruct()
     {
-        if ($this->bound) {
+        if ($this->isBound()) {
             $this->unbind();
         }
     }
@@ -461,7 +461,7 @@ class Directory
     public function startTLS()
     {
         $this->checkConnected();
-        if ($this->bound) {
+        if ($this->isBound()) {
             throw new AlreadyAvailableException('An active bound connection to the directory is already available');
         }
 
